@@ -98,6 +98,29 @@ const mutation = new GraphQLObjectType({
         return Client.findByIdAndRemove(args.id);
       }
     },
+    //update client
+    updateClient: {
+      type: ClientType,
+      args: {
+        id: {type: new GraphQLNonNull(GraphQLID)},
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        email: {type: new GraphQLNonNull(GraphQLString)},
+        phone: {type: new GraphQLNonNull(GraphQLString)},
+      },
+      resolve(parent,args){
+        return Client.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              name: args.name,
+              email: args.email,
+              phone: args.phone
+            }
+          },
+          {new: true}
+        );
+      }
+    },
     //add project
     addProject: {
       type: ProjectType,
